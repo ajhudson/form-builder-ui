@@ -1,0 +1,57 @@
+{
+    "env": {
+      "jest": true,
+      "browser": true
+    },
+    "extends": ["react-app"],
+    "plugins": ["react-hooks"],
+    "rules": {
+      "react/jsx-props-no-spreading": "off",
+      "react/jsx-curly-newline": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "react/forbid-prop-types": "off",
+      "import/prefer-default-export": "off",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [
+            "**/*.stories.{js,jsx}",
+            "**/*.spec.{js,jsx}",
+            "src/tests/react-testing-helper.jsx",
+            "e2e/**/*.js"
+          ]
+        }
+      ],
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        {
+          "required": {
+            "some": ["nesting", "id"]
+          }
+        }
+      ],
+      "jsx-a11y/label-has-for": [
+        "error",
+        {
+          "required": {
+            "some": ["nesting", "id"]
+          }
+        }
+      ],
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "off",
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "styled-components",
+              "message": "Please import from styled-components/macro."
+            }
+          ],
+          "patterns": ["!styled-components/macro"]
+        }
+      ]
+    }
+  }
+  

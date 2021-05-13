@@ -1,0 +1,30 @@
+{
+    "id": 1,
+    "formName": "Example form",
+    "fields": [
+        {
+            "fieldId": 101,
+            "fieldName": "firstName",
+            "displayName": "First Name",
+            "fieldType": "text",
+            "options": null,
+            "validationRules": {
+                "mandatory": { "value": true, "errorMessage": "First Name is required" },
+                "maxLength": { "value": 50, "errorMessage": "First Name can only be 50 characters" },
+                "pattern": null
+            }
+        },
+        {
+            "fieldId": 102,
+            "fieldName": "lastName",
+            "displayName": "Last Name",
+            "fieldType": "text",
+            "options": null,
+            "validationRules": {
+                "mandatory": { "value": true, "errorMessage": "Last Name is required" },
+                "maxLength": { "value": 50, "errorMessage": "Last Name can only be 50 characters" },
+                "pattern": null
+            }
+        }
+    ]
+}
