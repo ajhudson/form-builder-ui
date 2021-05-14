@@ -1,5 +1,5 @@
-import React from 'react'
+import React from 'react';
 
-const Test = () => <p>This is test</p>
+const Test = () => <p>This is test</p>;
 
-export default Test
+export default Test;
