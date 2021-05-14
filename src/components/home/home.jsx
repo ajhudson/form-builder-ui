@@ -1,5 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const Home = () => (<p>This is home</p>);
+const Home = () => <p>This is home</p>
 
-export default Home;
+export default Home
