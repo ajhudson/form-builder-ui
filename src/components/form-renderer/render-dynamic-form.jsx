@@ -1,60 +1,71 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import {
   Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Spinner,
   Container,
-  Row
+  Row,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col
 } from 'reactstrap';
 import LoadingModal from '../loading-modal/loading-modal';
-import jsonData from '../assets/form-data.json';
+import jsonData from '../assets/form-data';
+import MandatoryValidationError from './mandatory-validation-error';
 
 const RenderDynamicForm = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFormValid, setIsValid] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState(jsonData);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const onTextInput = (e) => {
     setFormData({ [e.target.name]: e.target.value, ...formData });
   };
 
-  /*
-  useEffect(async () => {
-    const loadDataPromise = async () => {
-      let data = null;
-      setTimeout(() => {
-        data = jsonData;
-      }, 1000);
+  const onOverFormSubmitBtn = (e) => {
+    console.log(e);
+  };
 
-      return data;
-    };
+  const loadingModal = (
+    <LoadingModal isLoading={isLoading} message="Form is loading..." />
+  );
 
-    const loadedFormData = await loadDataPromise();
-    console.log('form data: ', loadedFormData);
-  }, []);
-  */
+  const dynamicForm = (
+    <Container>
+      <Row>
+        <h1>{formData.formName}</h1>
+      </Row>
+      <Row>
+        <Form>
+          {formData.fields.map((f) => (
+            <FormGroup key={f.fieldId}>
+              <Label>
+                {f.displayName}
+                {f.validationRules.mandatory.value && (
+                  <span style={{ color: 'red', fontWeight: 'bold' }}>&nbsp;*</span>
+                )}
+              </Label>
+              <Input
+                type="text"
+                name={f.fieldName}
+                id={f.fieldName}
+                onKeyUp={onTextInput}
+              />
+              <MandatoryValidationError displayName={f.displayName} show="true" />
+            </FormGroup>
+          ))}
+        </Form>
+      </Row>
+      <Row style={{ marginTop: '10px' }}>
+        <Col>
+          <Button disabled={!isFormValid}>Submit</Button>
+        </Col>
+      </Row>
+    </Container>
+  );
 
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 2000);
-  }, []);
-
-  return <LoadingModal isLoading={isLoading} message="Form is loading..." />;
+  return <div>{isLoading ? loadingModal : dynamicForm}</div>;
 };
 
 export default RenderDynamicForm;
-
-/*
-<div className="container">
-            <h1>Rendering a Dynamic Form</h1>
-      
-            <Form>
-              <FormGroup>
-                <Label>First Name</Label>
-                <Input type="text" name="firstname" id="firstname" onKeyUp={onTextInput} />
-              </FormGroup>
-            </Form>
-          </div>
-          */

@@ -12,6 +12,9 @@
     "react/jsx-one-expression-per-line": "off",
     "react/forbid-prop-types": "off",
     "import/prefer-default-export": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "import/extensions": "off",
+    "spaced-comment": "off",
     "import/no-useless-path-segments": "warn",
     "import/no-extraneous-dependencies": [
       "error",
