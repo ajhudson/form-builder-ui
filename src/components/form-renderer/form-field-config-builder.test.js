@@ -1,23 +1,20 @@
 // @ts-nocheck
-import FormFieldFactory, {
+import FormFieldConfigBuilder, {
   FormFieldTypes,
   ValidationTypes
-} from './form-field-factory';
+} from './form-field-config-builder';
 
 describe('form field factory tests', () => {
-  let factory;
+  let builder;
 
   beforeEach(() => {
-    factory = new FormFieldFactory();
+    builder = new FormFieldConfigBuilder();
   });
 
   it('should create a text field with no validation rules', () => {
-    const field = factory.createFormField(
-      1,
-      'firstName',
-      'First Name',
-      FormFieldTypes.TEXT
-    );
+    const field = builder
+      .createFormField(1, 'firstName', 'First Name', FormFieldTypes.TEXT)
+      .getFormFieldConfig();
 
     const expectedField = {
       fieldId: 1,
@@ -25,21 +22,17 @@ describe('form field factory tests', () => {
       displayName: 'First Name',
       fieldType: 'text',
       options: null,
-      validationRules: null
+      validationRules: {}
     };
 
     expect(field).toMatchObject(expectedField);
   });
 
-  it.only('should create a text field with a mandatory rule', () => {
-    let field = factory.createFormField(
-      1,
-      'firstName',
-      'First Name',
-      FormFieldTypes.TEXT
-    );
-
-    field = factory.addValidationToFormField(field, ValidationTypes.MANDATORY);
+  it('should create a text field with a mandatory rule', () => {
+    const field = builder
+      .createFormField(1, 'firstName', 'First Name', FormFieldTypes.TEXT)
+      .addValidationToFormField(ValidationTypes.MANDATORY)
+      .getFormFieldConfig();
 
     const expectedField = {
       fieldId: 1,

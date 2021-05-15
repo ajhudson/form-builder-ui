@@ -4,7 +4,9 @@ export const MandatoryValidationRule = function () {
       return false;
     }
 
-    return val.trim().match(/^.+$/gi);
+    const patt = /^.+$/gi;
+
+    return patt.test(val.trim());
   }
 
   return {
