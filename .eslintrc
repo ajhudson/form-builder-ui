@@ -15,6 +15,7 @@
     "@typescript-eslint/ban-ts-ignore": "off",
     "import/extensions": "off",
     "spaced-comment": "off",
+    "func-names": "off",
     "import/no-useless-path-segments": "warn",
     "import/no-extraneous-dependencies": [
       "error",
