@@ -14,23 +14,35 @@ import LoadingModal from '../loading-modal/loading-modal';
 import formData from '../assets/form-data';
 import MandatoryValidationError from './mandatory-validation-error';
 
-const RenderDynamicForm = () => {
-  const initialisedFieldVals = formData.fields.reduce((prev, curr) => {
-    return { ...prev, [curr.fieldName]: '' };
+const fieldStateInitialiser = (initValue) => {
+  return formData.fields.reduce((prev, curr) => {
+    return { ...prev, [curr.fieldName]: initValue };
   }, {});
+};
 
+const deepCopyFieldState = (fieldState, fieldName, updatedFieldValue) => {
+  const tempFieldState = { ...fieldState };
+  delete tempFieldState[fieldName];
+  const newTempFieldState = { [fieldName]: updatedFieldValue, ...tempFieldState };
+
+  return newTempFieldState;
+};
+
+const RenderDynamicForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [beenTouched, setBeenTouched] = useState(false);
-  const [fieldVals, setFieldVals] = useState(initialisedFieldVals);
+  const [fieldVals, setFieldVals] = useState(fieldStateInitialiser(''));
+  const [mandatoryCheck, setMandatoryCheck] = useState(fieldStateInitialiser(false));
 
   const onTextInput = (e) => {
     console.log(`${e.target.name}: ${e.target.value}`);
 
-    const tempFieldVals = fieldVals;
-    delete tempFieldVals[e.target.name];
-    const newTempFieldVals = { [e.target.name]: e.target.value, ...tempFieldVals };
-    setFieldVals(newTempFieldVals);
+    const updatedFieldValues = deepCopyFieldState(
+      fieldVals,
+      e.target.name,
+      e.target.value
+    );
+    setFieldVals(updatedFieldValues);
   };
 
   useEffect(() => {
@@ -41,6 +53,7 @@ const RenderDynamicForm = () => {
     <LoadingModal isLoading={isLoading} message="Form is loading..." />
   );
 
+  /*
   const fieldPassesMandatoryCheck = (field) => {
     const val = fieldVals[field.fieldName].toString();
     const isMandatory = field.validationRules.mandatory.value;
@@ -51,6 +64,7 @@ const RenderDynamicForm = () => {
 
     return val.trim().length === 0;
   };
+  */
 
   const dynamicForm = (
     <Container>
