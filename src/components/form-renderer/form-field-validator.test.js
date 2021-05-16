@@ -16,7 +16,7 @@ describe('Form field tests', () => {
     const fieldConfig = builder
       .createFormField(1, 'firstName', 'First Name', FormFieldTypes.TEXT)
       .addValidationToFormField(ValidationTypes.MANDATORY)
-      .getFormFieldConfig();
+      .build();
 
     const fieldValidator = new FormFieldValidator();
     const result = fieldValidator.validateFormField(fieldConfig, '');
@@ -34,7 +34,7 @@ describe('Form field tests', () => {
   it('should pass mandatory check if the form field is empty and is configured to be optional', () => {
     const fieldConfig = builder
       .createFormField(1, 'firstName', 'First Name', FormFieldTypes.TEXT)
-      .getFormFieldConfig();
+      .build();
 
     const fieldValidator = new FormFieldValidator();
     const result = fieldValidator.validateFormField(fieldConfig, '');

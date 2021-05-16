@@ -14,7 +14,7 @@ describe('form field factory tests', () => {
   it('should create a text field with no validation rules', () => {
     const field = builder
       .createFormField(1, 'firstName', 'First Name', FormFieldTypes.TEXT)
-      .getFormFieldConfig();
+      .build();
 
     const expectedField = {
       fieldId: 1,
@@ -32,7 +32,7 @@ describe('form field factory tests', () => {
     const field = builder
       .createFormField(1, 'firstName', 'First Name', FormFieldTypes.TEXT)
       .addValidationToFormField(ValidationTypes.MANDATORY)
-      .getFormFieldConfig();
+      .build();
 
     const expectedField = {
       fieldId: 1,

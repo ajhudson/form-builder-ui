@@ -4,10 +4,9 @@ import FormFieldConfigBuilder, {
   FormFieldTypes,
   ValidationTypes
 } from './form-field-config-builder';
-import FormValidator from './form-validator';
 
-describe('form validator tests', () => {
-  it('should determine if a mandatory form field which is empty is not valid', () => {
+describe('Tests to do with building a form and producing a config object', () => {
+  it('should return a form config object correctly', () => {
     const fieldBuilder = new FormFieldConfigBuilder();
     const firstNameField = fieldBuilder
       .createFormField(101, 'firstName', 'First Name', FormFieldTypes.TEXT)
@@ -20,11 +19,22 @@ describe('form validator tests', () => {
       .addField(firstNameField)
       .build();
 
-    const formValues = {
-      firstName: ' '
+    const expectedFormConfig = {
+      id: 1,
+      formName: 'Test Form',
+      fields: [
+        {
+          fieldId: 101,
+          fieldName: 'firstName',
+          fieldType: 'text',
+          options: null,
+          validationRules: {
+            mandatory: { enabled: true, errorMessage: 'First Name is required.' }
+          }
+        }
+      ]
     };
 
-    const formValidator = new FormValidator();
-    formValidator.validate(formConfig, formValues);
+    expect(formConfig).toMatchObject(expectedFormConfig);
   });
 });

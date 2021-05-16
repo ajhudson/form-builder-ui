@@ -43,14 +43,14 @@ function FormFieldConfigBuilder() {
     return this;
   }
 
-  function getFormFieldConfig() {
+  function build() {
     return this.formField;
   }
 
   return {
     createFormField,
     addValidationToFormField,
-    getFormFieldConfig
+    build
   };
 }
 
