@@ -1,11 +1,5 @@
 // @ts-nocheck
-export const FormFieldTypes = {
-  TEXT: 'text'
-};
-
-export const ValidationTypes = {
-  MANDATORY: 'mandatory'
-};
+import ValidationTypes from './validation-types';
 
 function FormFieldConfigBuilder() {
   this.formField = {};

@@ -1,9 +1,8 @@
 // @ts-nocheck
-import FormFieldConfigBuilder, {
-  FormFieldTypes,
-  ValidationTypes
-} from './form-field-config-builder';
+import FormFieldConfigBuilder from './form-field-config-builder';
 import { FormFieldValidator } from './form-field-validator';
+import FormFieldTypes from './form-field-types';
+import ValidationTypes from './validation-types';
 
 describe('Form field tests', () => {
   let builder;
@@ -20,13 +19,14 @@ describe('Form field tests', () => {
 
     const fieldValidator = new FormFieldValidator();
     const result = fieldValidator.validateFormField(fieldConfig, '');
-    const expectedResult = {
-      mandatoryCheckResult: {
+    const expectedResult = [
+      {
+        validationType: ValidationTypes.MANDATORY,
         required: true,
         hasPassed: false,
         errorMessage: 'First Name is required.'
       }
-    };
+    ];
 
     expect(result).toMatchObject(expectedResult);
   });
@@ -39,13 +39,14 @@ describe('Form field tests', () => {
     const fieldValidator = new FormFieldValidator();
     const result = fieldValidator.validateFormField(fieldConfig, '');
 
-    const expectedResult = {
-      mandatoryCheckResult: {
+    const expectedResult = [
+      {
+        validationType: ValidationTypes.MANDATORY,
         required: false,
         hasPassed: true,
         errorMessage: null
       }
-    };
+    ];
 
     expect(result).toMatchObject(expectedResult);
   });

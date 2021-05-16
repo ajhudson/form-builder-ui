@@ -1,8 +1,7 @@
 // @ts-nocheck
-import FormFieldConfigBuilder, {
-  FormFieldTypes,
-  ValidationTypes
-} from './form-field-config-builder';
+import FormFieldConfigBuilder from './form-field-config-builder';
+import ValidationTypes from './validation-types';
+import FormFieldTypes from './form-field-types';
 
 describe('form field factory tests', () => {
   let builder;
