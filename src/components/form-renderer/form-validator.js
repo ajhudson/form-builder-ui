@@ -5,6 +5,10 @@ function FormValidator() {
   function validate(formConfig, formValues) {
     let failedCheckCount = 0;
     const fieldValidator = new FormFieldValidator();
+    const result = {
+      isValid: false,
+      fields: {}
+    };
 
     for (const [fieldName, fieldValue] of Object.entries(formValues)) {
       const fieldConfig = formConfig.fields.find((f) => f.fieldName === fieldName);
@@ -15,15 +19,17 @@ function FormValidator() {
           fieldValue
         );
 
-        console.log(validationResult);
-
         if (!validationResult.hasPassed) {
           failedCheckCount += 1;
         }
+
+        result.fields[fieldName] = validationResult;
       }
     }
 
-    return failedCheckCount === 0;
+    result.isValid = failedCheckCount === 0;
+
+    return result;
   }
 
   return {

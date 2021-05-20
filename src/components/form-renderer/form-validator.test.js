@@ -24,6 +24,17 @@ describe('form validator tests', () => {
     };
 
     const formValidator = new FormValidator();
-    formValidator.validate(formConfig, formValues);
+    const validationResult = formValidator.validate(formConfig, formValues);
+
+    expect(validationResult.isValid).toBeFalsy();
+
+    const firstNameValidationResult = validationResult.fields.firstName.find(
+      (v) => v.validationType === ValidationTypes.MANDATORY
+    );
+
+    expect(firstNameValidationResult.hasPassed).toBeFalsy();
+    expect(firstNameValidationResult.errorMessage).toContain(
+      'First Name is required.'
+    );
   });
 });
