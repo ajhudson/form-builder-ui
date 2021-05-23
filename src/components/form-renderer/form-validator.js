@@ -34,6 +34,10 @@ function FormValidator() {
     return this;
   }
 
+  function hasResult() {
+    return this.validationResult !== null;
+  }
+
   function getResult() {
     return this.validationResult;
   }
@@ -60,6 +64,7 @@ function FormValidator() {
 
   return {
     validate,
+    hasResult,
     getResult,
     isFormValid,
     isFieldValid,

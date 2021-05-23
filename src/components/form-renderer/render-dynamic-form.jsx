@@ -14,6 +14,7 @@ import LoadingModal from '../loading-modal/loading-modal';
 import formData from '../assets/form-data';
 import MandatoryValidationError from './mandatory-validation-error';
 import FormValidator from './form-validator';
+import ValidationField from './validation-field';
 
 const fieldStateInitialiser = (initValue) => {
   return formData.fields.reduce((prev, curr) => {
@@ -34,6 +35,7 @@ const RenderDynamicForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [fieldVals, setFieldVals] = useState(fieldStateInitialiser(''));
   const [fieldsTouched, setFieldsTouched] = useState(fieldStateInitialiser(false));
+  const [validationErrors, setValidationErrors] = useState([]);
   const formValidator = new FormValidator();
 
   const onTextInput = (e) => {
@@ -48,15 +50,34 @@ const RenderDynamicForm = () => {
     setFieldsTouched(touchedFields);
   };
 
-  const hasFieldBeenTouched = (fieldName) => fieldsTouched[fieldName] === true;
+  /*
+  const shouldShowValidationField = (fieldName) => {
+    if (!formValidator.hasResult()) {
+      return false;
+    }
 
-  useEffect(() => {
-    console.log('IS FORM VALID: ', isFormValid);
-  }, []);
+    const hasFieldBeenTouched = fieldsTouched[fieldName] === true;
+    const isFieldValid = formValidator.isFieldValid(fieldName);
+    const showField = hasFieldBeenTouched && !isFieldValid;
+
+    console.log(`show field for ${fieldName}: ${showField}`);
+
+    return showField;
+  };
+  */
+
+  const renderValidationFields = () => {
+    for (const [fname, fval] of Object.entries(fieldVals)) {
+      const isFieldValid = formValidator.isFieldValid(fname);
+
+      console.log(`Field ${fname}:${fval} valid: ${isFieldValid}`);
+    }
+  };
 
   useEffect(() => {
     formValidator.validate(formData, fieldVals);
     setIsFormValid(formValidator.isFormValid());
+    renderValidationFields();
   }, [fieldVals]);
 
   const loadingModal = (
@@ -84,11 +105,6 @@ const RenderDynamicForm = () => {
                 name={f.fieldName}
                 id={f.fieldName}
                 onChange={onTextInput}
-              />
-
-              <MandatoryValidationError
-                displayName={f.displayName}
-                show={hasFieldBeenTouched(f.fieldName)}
               />
             </FormGroup>
           ))}

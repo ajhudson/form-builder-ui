@@ -9,7 +9,7 @@
       "fieldType": "text",
       "options": null,
       "validationRules": {
-        "mandatory": { "value": true, "errorMessage": "First Name is required" },
+        "mandatory": { "enabled": true, "errorMessage": "First Name is required" },
         "maxLength": {
           "value": 50,
           "errorMessage": "First Name can only be 50 characters"
@@ -24,7 +24,7 @@
       "fieldType": "text",
       "options": null,
       "validationRules": {
-        "mandatory": { "value": true, "errorMessage": "Last Name is required" },
+        "mandatory": { "enabled": true, "errorMessage": "Last Name is required" },
         "maxLength": {
           "value": 50,
           "errorMessage": "Last Name can only be 50 characters"

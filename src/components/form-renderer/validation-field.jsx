@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import PropTypes from 'prop-types';
 import ValidationTypes from './validation-types';
 import MandatoryValidationError from './mandatory-validation-error';
