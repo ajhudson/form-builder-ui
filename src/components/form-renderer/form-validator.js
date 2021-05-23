@@ -1,5 +1,3 @@
-// @ts-nocheck
-import { func } from 'prop-types';
 import { FormFieldValidator } from './form-field-validator';
 
 function FormValidator() {

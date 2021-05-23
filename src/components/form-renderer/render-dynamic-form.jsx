@@ -13,6 +13,7 @@ import {
 import LoadingModal from '../loading-modal/loading-modal';
 import formData from '../assets/form-data';
 import MandatoryValidationError from './mandatory-validation-error';
+import FormValidator from './form-validator';
 
 const fieldStateInitialiser = (initValue) => {
   return formData.fields.reduce((prev, curr) => {
@@ -32,39 +33,35 @@ const RenderDynamicForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [fieldVals, setFieldVals] = useState(fieldStateInitialiser(''));
-  const [mandatoryCheck, setMandatoryCheck] = useState(fieldStateInitialiser(false));
+  const [fieldsTouched, setFieldsTouched] = useState(fieldStateInitialiser(false));
+  const formValidator = new FormValidator();
 
   const onTextInput = (e) => {
-    console.log(`${e.target.name}: ${e.target.value}`);
-
     const updatedFieldValues = deepCopyFieldState(
       fieldVals,
       e.target.name,
       e.target.value
     );
+    const touchedFields = deepCopyFieldState(fieldsTouched, e.target.name, true);
+
     setFieldVals(updatedFieldValues);
+    setFieldsTouched(touchedFields);
   };
 
+  const hasFieldBeenTouched = (fieldName) => fieldsTouched[fieldName] === true;
+
   useEffect(() => {
-    console.log(fieldVals);
+    console.log('IS FORM VALID: ', isFormValid);
+  }, []);
+
+  useEffect(() => {
+    formValidator.validate(formData, fieldVals);
+    setIsFormValid(formValidator.isFormValid());
   }, [fieldVals]);
 
   const loadingModal = (
     <LoadingModal isLoading={isLoading} message="Form is loading..." />
   );
-
-  /*
-  const fieldPassesMandatoryCheck = (field) => {
-    const val = fieldVals[field.fieldName].toString();
-    const isMandatory = field.validationRules.mandatory.value;
-
-    if (!isMandatory) {
-      return false;
-    }
-
-    return val.trim().length === 0;
-  };
-  */
 
   const dynamicForm = (
     <Container>
@@ -72,7 +69,7 @@ const RenderDynamicForm = () => {
         <h1>{formData.formName}</h1>
       </Row>
       <Row>
-        <Form>
+        <Form autoComplete="off">
           {formData.fields.map((f) => (
             <FormGroup key={f.fieldId}>
               <Label>
@@ -89,7 +86,10 @@ const RenderDynamicForm = () => {
                 onChange={onTextInput}
               />
 
-              <MandatoryValidationError displayName={f.displayName} show="true" />
+              <MandatoryValidationError
+                displayName={f.displayName}
+                show={hasFieldBeenTouched(f.fieldName)}
+              />
             </FormGroup>
           ))}
         </Form>
@@ -98,6 +98,9 @@ const RenderDynamicForm = () => {
         <Col>
           <Button disabled={!isFormValid}>Submit</Button>
         </Col>
+      </Row>
+      <Row>
+        <Col>Is form valid: {isFormValid ? 'yes' : 'no'}</Col>
       </Row>
     </Container>
   );
