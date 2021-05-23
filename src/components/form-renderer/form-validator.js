@@ -1,7 +1,10 @@
 // @ts-nocheck
+import { func } from 'prop-types';
 import { FormFieldValidator } from './form-field-validator';
 
 function FormValidator() {
+  this.validationResult = null;
+
   function validate(formConfig, formValues) {
     let failedCheckCount = 0;
     const fieldValidator = new FormFieldValidator();
@@ -28,12 +31,41 @@ function FormValidator() {
     }
 
     result.isValid = failedCheckCount === 0;
+    this.validationResult = result;
 
-    return result;
+    return this;
+  }
+
+  function getResult() {
+    return this.validationResult;
+  }
+
+  function isFormValid() {
+    return this.validationResult.isValid;
+  }
+
+  function isFieldValid(fieldName) {
+    return this.validationResult.fields[fieldName].every((rules) => rules.hasPassed);
+  }
+
+  function getErrorMessagesForField(fieldName) {
+    const ret = this.validationResult.fields[fieldName].reduce(
+      (prev, curr) => [
+        ...prev,
+        { validationType: curr.validationType, errorMessage: curr.errorMessage }
+      ],
+      []
+    );
+
+    return ret;
   }
 
   return {
-    validate
+    validate,
+    getResult,
+    isFormValid,
+    isFieldValid,
+    getErrorMessagesForField
   };
 }
 

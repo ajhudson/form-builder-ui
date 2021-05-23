@@ -1,4 +1,3 @@
-// @ts-nocheck
 import FormConfigBuilder from './form-config-builder';
 import FormFieldConfigBuilder from './form-field-config-builder';
 import FormValidator from './form-validator';
@@ -24,17 +23,16 @@ describe('form validator tests', () => {
     };
 
     const formValidator = new FormValidator();
-    const validationResult = formValidator.validate(formConfig, formValues);
+    formValidator.validate(formConfig, formValues);
 
-    expect(validationResult.isValid).toBeFalsy();
+    expect(formValidator.isFormValid()).toBeFalsy();
+    expect(formValidator.isFieldValid('firstName')).toBeFalsy();
 
-    const firstNameValidationResult = validationResult.fields.firstName.find(
-      (v) => v.validationType === ValidationTypes.MANDATORY
-    );
-
-    expect(firstNameValidationResult.hasPassed).toBeFalsy();
-    expect(firstNameValidationResult.errorMessage).toContain(
-      'First Name is required.'
-    );
+    expect(formValidator.getErrorMessagesForField('firstName')).toMatchObject([
+      {
+        validationType: ValidationTypes.MANDATORY,
+        errorMessage: 'First Name is required.'
+      }
+    ]);
   });
 });
