@@ -31,6 +31,9 @@ function FormValidator() {
     result.isValid = failedCheckCount === 0;
     this.validationResult = result;
 
+    console.clear();
+    console.log(result);
+
     return this;
   }
 
@@ -47,6 +50,7 @@ function FormValidator() {
   }
 
   function isFieldValid(fieldName) {
+    console.log(this.validationResult);
     return this.validationResult.fields[fieldName].every((rules) => rules.hasPassed);
   }
 

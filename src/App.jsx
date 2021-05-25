@@ -1,13 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import RenderDynamicForm from './components/form-renderer/render-dynamic-form';
+import formConfig from './components/assets/form-data.json';
 
 function App() {
   return (
     <Router>
-      <Route path="/" exact component={RenderDynamicForm} />
-      <Route path="/render-form" component={RenderDynamicForm} />
+      <Switch>
+        <Route path="/">
+          <RenderDynamicForm formConfig={formConfig} />
+        </Route>
+      </Switch>
     </Router>
   );
 }

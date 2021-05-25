@@ -10,17 +10,20 @@ import {
   Input,
   Col
 } from 'reactstrap';
+import PropTypes, { shape } from 'prop-types';
+import styled from 'styled-components/macro';
 import LoadingModal from '../loading-modal/loading-modal';
-import formData from '../assets/form-data';
+//import formData from '../assets/form-data';
 import MandatoryValidationError from './mandatory-validation-error';
 import FormValidator from './form-validator';
 import ValidationField from './validation-field';
 
-const fieldStateInitialiser = (initValue) => {
-  return formData.fields.reduce((prev, curr) => {
-    return { ...prev, [curr.fieldName]: initValue };
-  }, {});
-};
+const MandatoryMark = styled.span.attrs((props) => ({
+  id: props.id.toLowerCase()
+}))`
+  color: red;
+  font-weight: bold;
+`;
 
 const deepCopyFieldState = (fieldState, fieldName, updatedFieldValue) => {
   const tempFieldState = { ...fieldState };
@@ -30,7 +33,13 @@ const deepCopyFieldState = (fieldState, fieldName, updatedFieldValue) => {
   return newTempFieldState;
 };
 
-const RenderDynamicForm = () => {
+const RenderDynamicForm = ({ formConfig }) => {
+  const fieldStateInitialiser = (initValue) => {
+    return formConfig.fields.reduce((prev, curr) => {
+      return { ...prev, [curr.fieldName]: initValue };
+    }, {});
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [fieldVals, setFieldVals] = useState(fieldStateInitialiser(''));
@@ -67,15 +76,20 @@ const RenderDynamicForm = () => {
   */
 
   const renderValidationFields = () => {
-    for (const [fname, fval] of Object.entries(fieldVals)) {
-      const isFieldValid = formValidator.isFieldValid(fname);
-
-      console.log(`Field ${fname}:${fval} valid: ${isFieldValid}`);
+    for (const [currentFieldName, currentFieldValue] of Object.entries(fieldVals)) {
+      //console.log('field name: ', currentFieldName);
+      //console.log('field value: ', currentFieldValue);
+      //const isFieldValid = formValidator.isFieldValid(currentFieldName);
     }
+
+    console.clear();
+    console.log(formValidator.getResult());
+
+    return null;
   };
 
   useEffect(() => {
-    formValidator.validate(formData, fieldVals);
+    formValidator.validate(formConfig, fieldVals);
     setIsFormValid(formValidator.isFormValid());
     renderValidationFields();
   }, [fieldVals]);
@@ -87,25 +101,31 @@ const RenderDynamicForm = () => {
   const dynamicForm = (
     <Container>
       <Row>
-        <h1>{formData.formName}</h1>
+        <h1>{formConfig.formName}</h1>
       </Row>
       <Row>
         <Form autoComplete="off">
-          {formData.fields.map((f) => (
+          {formConfig.fields.map((f) => (
             <FormGroup key={f.fieldId}>
               <Label>
                 {f.displayName}
-                {f.validationRules.mandatory.value && (
-                  <span style={{ color: 'red', fontWeight: 'bold' }}>&nbsp;*</span>
-                )}
+                {/*f.validationRules.mandatory.enabled && (
+                  <MandatoryMark id={`mandatory-mark-${f.fieldName}`}>
+                    &nbsp;*
+                  </MandatoryMark>
+                )*/}
               </Label>
 
               <Input
                 type="text"
                 name={f.fieldName}
                 id={f.fieldName}
+                placeholder={f.displayName}
                 onChange={onTextInput}
               />
+
+              {/* this will have to be an array of objects being passed into <ValidationField> component */}
+              {renderValidationFields()}
             </FormGroup>
           ))}
         </Form>
@@ -125,3 +145,7 @@ const RenderDynamicForm = () => {
 };
 
 export default RenderDynamicForm;
+
+RenderDynamicForm.propTypes = {
+  formConfig: PropTypes.object.isRequired
+};
